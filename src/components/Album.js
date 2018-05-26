@@ -12,7 +12,8 @@ class Album extends Component {
         this.state = {
             album: album,
             currentSong: album.songs[0],
-            isPlaying: false
+            isPlaying: false,
+            hoveredSong: null
         }
 
         this.audioElement = document.createElement("audio");
@@ -32,7 +33,6 @@ class Album extends Component {
     setSong(song) {
         this.audioElement.src = song.audioSrc;
         this.setState({currentSong: song});
-        console.log(this.state);
     }
 
     handleSongClick(song) {
@@ -43,6 +43,14 @@ class Album extends Component {
             if(!isSameSong) { this.setSong(song); }
             this.play();
         }
+    }
+
+    hoverEnterSong(song) {
+        this.setState({hoveredSong: song});
+    }
+
+    hoverExitSong() {
+        this.setState({hoveredSong: null})
     }
 
     render() {
@@ -72,8 +80,17 @@ class Album extends Component {
                     <tbody>
                         {
                             this.state.album.songs.map( (song, index) =>
-                                <tr key={index} className="song" onClick={() => this.handleSongClick(song)}>
-                                    <td className="song-number">{index + 1}</td>
+                                <tr key={index} className="song" onClick={() => this.handleSongClick(song)} onMouseEnter={() => this.hoverEnterSong(song)} onMouseLeave={() => this.hoverExitSong()}>
+                                    <td className="song-number">
+                                        {/*If the hovered song is this song, display play button unless this song is currently playing, then display pause button ELSE display track number. */}
+                                        {/*This is a complex nest of if statements for display, and would probably be better solved with another component instead. */}
+
+                                        {
+                                            this.state.hoveredSong === song ? (
+                                                <span className={(this.state.isPlaying && this.state.currentSong === song) ? "ion-md-pause" : "ion-md-play"}></span>
+                                            ) : (index + 1)
+                                        }
+                                    </td>
                                     <td className="song-title">{song.title}</td>
                                     <td className="song-duration">{song.duration}</td>
                                 </tr>
