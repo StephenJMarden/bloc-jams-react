@@ -1,0 +1,22 @@
+.landing {
+    padding-top: 1em;
+    height: 100%;
+    overflow-y: auto;
+
+    h1 {
+        font-size: 3em;
+    }
+
+    .selling-points {
+        display: table;
+        margin: 3em auto;
+
+        .point {
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 1em;
+            margin: 1em;
+            margin-bottom: 2em;
+        }
+    }
+}

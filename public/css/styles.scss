@@ -1,0 +1,26 @@
+@import 'PlayerBar';
+@import 'Header';
+@import 'Landing';
+@import 'Library';
+@import 'Album';
+
+.App {
+    height: 100%;
+    width: 100vw;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+main {
+    margin-top: -1em;
+    flex: 1 1 auto;
+    overflow: hidden;
+    background: rgba(128, 128, 128, .1);
+}
+
+body {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+}

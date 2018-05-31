@@ -103,6 +103,13 @@ class Album extends Component {
         this.eventListeners = {
             timeupdate: e => {
                 this.setState({currentTime: this.audioElement.currentTime});
+                //Autoplay
+                if(this.state.currentTime === this.state.duration) {
+                    const currentIndex = this.state.album.songs.findIndex(song => this.state.currentSong === song);
+                    if(currentIndex < this.state.album.songs.length -1) {
+                        this.handleNextClick();
+                    }
+                }
             },
             durationchange: e => {
                 this.setState({duration: this.audioElement.duration});
@@ -126,49 +133,53 @@ class Album extends Component {
     render() {
         return (
             <section className="album">
-                <section id="album-info">
-                    <img id="album-cover-art" src={this.state.album.albumCover} alt={this.state.album.albumTitle} />
-                    <div className="album-details">
-                        <h1 id="album-title">{this.state.album.albumTitle}</h1>
-                        <h2 className="artist">{this.state.album.artist}</h2>
-                        <div id="release-info">{this.state.album.releaseInfo}</div>
-                    </div>
-                </section>
-                <table id="song-list">
-                    <colgroup>
-                        <col id="song-number-column" />
-                        <col id="song-title-column" />
-                        <col id="song-duration-column" />
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th>Track</th>
-                            <th>Title</th>
-                            <th>Duration</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            this.state.album.songs.map( (song, index) =>
-                                <tr key={index} className="song" onClick={() => this.handleSongClick(song)} onMouseEnter={() => this.hoverEnterSong(song)} onMouseLeave={() => this.hoverExitSong()}>
-                                    <td className="song-number">
-                                        {/*If the hovered song is this song, display play button unless this song is currently playing, then display pause button ELSE display track number. */}
-                                        {/*This is a complex nest of if statements for display, and would probably be better solved with another component instead. */}
+                <section id="content">
+                    <section id="album-info">
+                        <img id="album-cover-art" className="ui image medium centered" src={this.state.album.albumCover} alt={this.state.album.albumTitle} />
+                        <div className="album-details">
+                            <h1 id="album-title">{this.state.album.title}</h1>
+                            <h2 className="artist">{this.state.album.artist}</h2>
+                            <div id="release-info">{this.state.album.releaseInfo}</div>
+                        </div>
+                    </section>
+                    <table id="song-list" className="ui selectable very basic collapsing table">
+                        <colgroup>
+                            <col id="song-number-column" />
+                            <col id="song-title-column" />
+                            <col id="song-duration-column" />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th className="collapsing padded">#</th>
+                                <th>Title</th>
+                                <th className="collapsing">Duration</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                this.state.album.songs.map( (song, index) =>
+                                    <tr key={index} className="song" onClick={() => this.handleSongClick(song)} onMouseEnter={() => this.hoverEnterSong(song)} onMouseLeave={() => this.hoverExitSong()}>
+                                        <td className="song-number center aligned padded">
+                                            {/*If the hovered song is this song, display play button unless this song is currently playing, then display pause button ELSE display track number. */}
+                                            {/*This is a complex nest of if statements for display, and would probably be better solved with another component instead. */}
 
-                                        {
-                                            this.state.hoveredSong === song ? (
-                                                <span className={(this.state.isPlaying && this.state.currentSong === song) ? "ion-md-pause" : "ion-md-play"}></span>
-                                            ) : (index + 1)
-                                        }
-                                    </td>
-                                    <td className="song-title">{song.title}</td>
-                                    <td className="song-duration">{this.formatTime(song.duration)}</td>
-                                </tr>
-                            )
-                        }
-                    </tbody>
-                </table>
+                                            {
+                                                this.state.hoveredSong === song ? (
+                                                    <span className={(this.state.isPlaying && this.state.currentSong === song) ? "ion-md-pause" : "ion-md-play"}></span>
+                                                ) : (index + 1)
+                                            }
+                                        </td>
+                                        <td className="song-title">{song.title}</td>
+                                        <td className="song-duration center aligned">{this.formatTime(song.duration)}</td>
+                                    </tr>
+                                )
+                            }
+                        </tbody>
+                    </table>
+                </section>
+
                 <PlayerBar
+                    album={this.state.album}
                     isPlaying={this.state.isPlaying}
                     currentSong={this.state.currentSong}
                     currentTime={this.audioElement.currentTime}
