@@ -2,6 +2,10 @@
     padding-top: 1em;
     height: 100%;
     overflow-y: auto;
+    background-image: url("/assets/images/free-background-photo.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 
     h1 {
         font-size: 3em;
@@ -13,7 +17,7 @@
 
         .point {
             border-radius: 5px;
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.7);
             padding: 1em;
             margin: 1em;
             margin-bottom: 2em;
