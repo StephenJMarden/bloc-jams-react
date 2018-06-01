@@ -136,6 +136,10 @@
     bottom: 0;
     display: flex;
 
+    img {
+        height: 80px;
+    }
+
     #song-info {
         text-align: left;
         padding-left: 1em;
